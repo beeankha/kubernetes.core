@@ -26,3 +26,5 @@ The **coverage** job uses **`ansible-test`** (`units --coverage`, then **`covera
 Org secrets and fork PR behavior follow GitHub's
 [secrets in Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
 documentation; the Sonar finalize job runs in this repository after **`all_green`** succeeds.
+
+The **`finalize`** job only runs when **`workflow_run.head_repository`** matches **`ansible-collections/kubernetes.core`**, so we do not checkout arbitrary **`head_sha`** commits from forks while using org **`SONAR_TOKEN`**. Pull requests opened from forks still run **`all_green`** for CI; they do not trigger this Sonar finalize job (same limitation as typical fork secret behavior).

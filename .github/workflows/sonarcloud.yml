@@ -3,6 +3,9 @@
 # Triggered after **all_green** (linters on PR, sanity, units, coverage). Downloads **coverage***
 # artifacts and passes **sonar.python.coverage.reportPaths** to the scanner, matching
 # ansible-collections/amazon.aws (see https://github.com/ansible-collections/amazon.aws/pull/2871).
+#
+# The finalize job runs only when **head_repository** matches this repo so we never checkout or scan
+# arbitrary commits from fork refs with org secrets (SonarCloud security gate / fork PR limitation).
 
 ---
 name: SonarCloud
@@ -23,7 +26,11 @@ jobs:
   finalize:
     name: finalize
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
+    if: >-
+      ${{ github.event.workflow_run.conclusion == 'success'
+      && github.repository == 'ansible-collections/kubernetes.core'
+      && github.event.workflow_run.head_repository.full_name == github.repository
+      && secrets.ANSIBLE_COLLECTIONS_ORG_SONAR_TOKEN_CICD_BOT != '' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
