@@ -30,3 +30,7 @@ These are outlined in the collection's [tox.ini](tox.ini) file (`envlist`) and G
 | stable-2.18 | 3.11, 3.12, 3.13 | 3.11, 3.12, 3.13 |
 | stable-2.17 | 3.10, 3.11, 3.12 | 3.10, 3.11, 3.12 |
 | stable-2.16 | 3.10, 3.11 | 3.10, 3.11 |
+
+## SonarCloud
+
+Static analysis and Python coverage are uploaded to SonarCloud after the **`all_green`** workflow completes; the finalize step is defined in [.github/workflows/sonarcloud.yml](.github/workflows/sonarcloud.yml). For dashboard links, workflow details, and secrets behavior, see [SONARCLOUD.md](SONARCLOUD.md).
