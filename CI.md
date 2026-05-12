@@ -33,4 +33,4 @@ These are outlined in the collection's [tox.ini](tox.ini) file (`envlist`) and G
 
 ## SonarCloud
 
-Static analysis and Python coverage are uploaded to SonarCloud after the **`all_green`** workflow completes; the finalize step is defined in [.github/workflows/sonarcloud.yml](.github/workflows/sonarcloud.yml). For dashboard links, workflow details, and secrets behavior, see [SONARCLOUD.md](SONARCLOUD.md).
+SonarCloud analysis is defined in [.github/workflows/sonarcloud.yml](.github/workflows/sonarcloud.yml) as a **reusable workflow** (`workflow_call`): it checks out the PR head or push SHA, downloads the **`coverage`** artifact from the same run, and runs the pinned **SonarSource** scan action with **`sonar.python.coverage.reportPaths`**. It is meant to be invoked from **[`all_green_check.yaml`](.github/workflows/all_green_check.yaml)** after the **`all_green`** gate and **coverage** job succeed (same **`pull_request`** / **`push`** event—no **`workflow_run`** finalize job). Pass **`secrets: inherit`** or **`ANSIBLE_COLLECTIONS_ORG_SONAR_TOKEN_CICD_BOT`**. Details, fork gating, and links: [SONARCLOUD.md](SONARCLOUD.md).
