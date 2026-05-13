@@ -124,3 +124,18 @@ jobs:
 
           print('all_green OK', results)
           "
+
+  sonarcloud:
+    name: SonarCloud scan
+    needs:
+      - all_green
+      - coverage
+    if: >-
+      ${{ needs.all_green.result == 'success'
+      && secrets.ANSIBLE_COLLECTIONS_ORG_SONAR_TOKEN_CICD_BOT != ''
+      && (github.event_name == 'push'
+      || (github.event_name == 'pull_request'
+      && github.event.pull_request.head.repo.full_name == github.repository)) }}
+    uses: ./.github/workflows/sonarcloud.yml
+    secrets:
+      ANSIBLE_COLLECTIONS_ORG_SONAR_TOKEN_CICD_BOT: ${{ secrets.ANSIBLE_COLLECTIONS_ORG_SONAR_TOKEN_CICD_BOT }}
